@@ -14,11 +14,12 @@ const isLoggedIn = (to, from, next) => {
   } else if (store.getters["user/isLoggedIn"] === null) {
     const unsubscribe = store.subscribe(mutation => {
       if (mutation.type === "user/refreshTokenSuccess") {
+        unsubscribe();
         next();
       } else if (mutation.type === "user/refreshTokenError") {
+        unsubscribe();
         router.push("/signin");
       }
-      unsubscribe();
     });
   } else {
     router.push("/signin");
